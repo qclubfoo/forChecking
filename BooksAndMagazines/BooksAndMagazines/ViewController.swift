@@ -10,44 +10,46 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var buttonOne = UIButton(type: .roundedRect)
-    var buttonTwo = UIButton(type: .roundedRect)
-    var books: [Book] = [Book(name: "War and Peace", author: "L.N.Tolstoy"), Book(name: "Evgeniy Onegin", author: "A.S. Pushkin")]
-    var magazines: [Magazine] = [Magazine(name: "Ideas of your home", dateOfProduce: 1990), Magazine(name: "Tog gear", dateOfProduce: 2010), Magazine(name: "DIY Garden", dateOfProduce: 2020)]
+    var bookButton = UIButton(type: .roundedRect)
+    var magazineButton = UIButton(type: .roundedRect)
+    let booksModel = BooksModel()
+    let magazinesModel = MagazinesModel()
+    var books = [Book]()
+    var magazines = [Magazine]()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        let buttons: [UIButton] = [buttonOne, buttonTwo]
+        books = booksModel.getBooks()
+        magazines = magazinesModel.getMagazines()
+        let buttons: [UIButton] = [bookButton, magazineButton]
         view.backgroundColor = .white
         for button in buttons {
             view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
         }
-        setupButton(button: buttonOne, withTitle: "Books", withColor: .systemBlue)
-        setupButton(button: buttonTwo, withTitle: "Magazines", withColor: .systemTeal)
+        setupButton(button: bookButton, withTitle: "Books", withColor: .systemBlue)
+        setupButton(button: magazineButton, withTitle: "Magazines", withColor: .systemRed)
         
-        buttonOne.addTarget(self, action: #selector(bookButtonTapped(sender:)), for: .touchUpInside)
-        buttonTwo.addTarget(self, action: #selector(magazineButtonTapped(sender:)), for: .touchUpInside)
+        bookButton.addTarget(self, action: #selector(bookButtonTapped), for: .touchUpInside)
+        magazineButton.addTarget(self, action: #selector(magazineButtonTapped), for: .touchUpInside)
         
-        NSLayoutConstraint(item: buttonOne, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: -100).isActive = true
-        NSLayoutConstraint(item: buttonTwo, attribute: .top, relatedBy: .equal, toItem: buttonOne, attribute: .bottom, multiplier: 1, constant: 100).isActive = true
+        bookButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100).isActive = true
+        magazineButton.topAnchor.constraint(equalTo: bookButton.bottomAnchor, constant: 100).isActive = true
     }
     
-    
-    @objc private func bookButtonTapped(sender: UIButton) {
-        let loadVC = showDisplayViewController()
-        loadVC.array = books
-        self.present(loadVC, animated: true)
-        print("bookButtonTapped")
+    @objc private func bookButtonTapped() {
+        displayNavController(forArray: books)
     }
     
-    @objc private func magazineButtonTapped(sender: UIButton) {
-        let loadVC = showDisplayViewController()
-        loadVC.array = magazines
-        self.present(loadVC, animated: true)
-        print("magazineButtonTapped")
+    @objc private func magazineButtonTapped() {
+        displayNavController(forArray: magazines)
+    }
+    
+    private func displayNavController(forArray array: [DisplayInfoProtocol]) {
+        let loadVC = ShowDisplayViewController()
+        loadVC.array = array
+        navigationController?.pushViewController(loadVC, animated: true)
     }
     
     private func setupButton(button: UIButton, withTitle title: String, withColor newColor: UIColor?) {
@@ -56,12 +58,10 @@ class ViewController: UIViewController {
         button.backgroundColor = color
         button.layer.cornerRadius = 10
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.setTitle("Pushed", for: .highlighted)
-        button.setTitleColor(.red, for: .highlighted)
+        button.setTitleColor(.white, for: .highlighted)
         button.widthAnchor.constraint(equalToConstant: 200).isActive = true
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
-    
 }
-

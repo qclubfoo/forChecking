@@ -9,6 +9,7 @@
 import Foundation
 
 protocol DisplayInfoProtocol {
-    var labelOne: String { get }
-    var labelTwo: String { get }
+    var nameLabel: String { get }
+    var detailLable: String { get }
+    var about: String? { get }
 }
