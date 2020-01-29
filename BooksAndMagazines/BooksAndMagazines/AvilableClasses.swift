@@ -15,6 +15,14 @@ struct Book: Codable {
 }
 
 extension Book: DisplayInfoProtocol {
+    var wallPaper: String {
+        "booksWallpaper"
+    }
+    
+    var navControllerLable: String {
+        "Books"
+    }
+
     var about: String? {
         aboutBook
     }
@@ -35,6 +43,14 @@ struct Magazine: Codable {
 }
 
 extension Magazine: DisplayInfoProtocol {
+    var wallPaper: String {
+        "magazinesWallpaper"
+    }
+    
+    var navControllerLable: String {
+        "Magazines"
+    }
+    
     var about: String? {
         aboutMagazine
     }

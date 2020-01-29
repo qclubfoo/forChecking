@@ -29,7 +29,7 @@ class JSONService {
             }
     
     func getMagazinesFromJSON() -> [Magazine] {
-        let urlString = "https://firebasestorage.googleapis.com/v0/b/ridescount.appspot.com/o/magazines.json?alt=media&token=0c7a4777-d72b-4e0f-bf82-3636845c9661"
+        let urlString = "https://firebasestorage.googleapis.com/v0/b/ridescount.appspot.com/o/magazines.json?alt=media&token=ed234c09-3cb7-40c8-ad3d-60eb5990af43"
             let url = URL(string: urlString)!
                 do {
                     let data = try Data(contentsOf: url, options: .alwaysMapped)

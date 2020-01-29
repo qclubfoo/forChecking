@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     var bookButton = UIButton(type: .roundedRect)
     var magazineButton = UIButton(type: .roundedRect)
+    var backroundImage = UIImageView()
     let booksModel = BooksModel()
     let magazinesModel = MagazinesModel()
     var books = [Book]()
@@ -19,10 +20,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        let buttons: [UIButton] = [bookButton, magazineButton]
         books = booksModel.getBooks()
         magazines = magazinesModel.getMagazines()
-        let buttons: [UIButton] = [bookButton, magazineButton]
-        view.backgroundColor = .white
+        view.addSubview(backroundImage)
+        backroundImage.translatesAutoresizingMaskIntoConstraints = false
+        backroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        backroundImage.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        backroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        backroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        backroundImage.image = UIImage(named: "books")
+        backroundImage.alpha = 0.60
+        backroundImage.contentMode = .scaleAspectFill
         for button in buttons {
             view.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -34,8 +44,8 @@ class ViewController: UIViewController {
         bookButton.addTarget(self, action: #selector(bookButtonTapped), for: .touchUpInside)
         magazineButton.addTarget(self, action: #selector(magazineButtonTapped), for: .touchUpInside)
         
-        bookButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100).isActive = true
-        magazineButton.topAnchor.constraint(equalTo: bookButton.bottomAnchor, constant: 100).isActive = true
+        bookButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
+        magazineButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50).isActive = true
     }
     
     @objc private func bookButtonTapped() {
@@ -48,8 +58,11 @@ class ViewController: UIViewController {
     
     private func displayNavController(forArray array: [DisplayInfoProtocol]) {
         let loadVC = ShowDisplayViewController()
+        loadVC.title = array.first?.navControllerLable
+        let navigationController = UINavigationController(rootViewController: loadVC)
+        navigationController.modalPresentationStyle = .fullScreen
         loadVC.array = array
-        navigationController?.pushViewController(loadVC, animated: true)
+        present(navigationController, animated: true, completion: nil)
     }
     
     private func setupButton(button: UIButton, withTitle title: String, withColor newColor: UIColor?) {

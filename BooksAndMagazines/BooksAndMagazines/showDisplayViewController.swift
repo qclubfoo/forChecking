@@ -10,12 +10,9 @@ import UIKit
 
 class ShowDisplayViewController: UIViewController {
 
-    var navController = UINavigationController()
     var tableView = UITableView()
     var closeBarButton = UIBarButtonItem()
-    var backButton = UIBarButtonItem()
     var array = [DisplayInfoProtocol]()
-    
     
     override func loadView() {
         self.view = tableView
@@ -23,33 +20,43 @@ class ShowDisplayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.setRightBarButton(closeBarButton, animated: true)
+        self.navigationItem.setLeftBarButton(closeBarButton, animated: true)
         configureTableView()
-//        configureBarButton()
+        configureBarButton()
     }
 
-    func configureTableView() {
+    private func configureTableView() {
+        
+        let tableViewBackground = UIImageView()
+        
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 70
+        tableView.rowHeight = 50
+        
+        tableViewBackground.image = UIImage(named: array.first?.wallPaper ?? "books")
+        tableViewBackground.contentMode = .scaleAspectFill
+        tableViewBackground.alpha = 0.2
+        tableView.backgroundView = tableViewBackground
+        
     }
     
-//    func configureBarButton() {
-//        closeBarButton.style = .done
-//        closeBarButton.title = "Close"
-//        closeBarButton.target = self
-//        closeBarButton.action = #selector(dismissAction)
-//    }
+    private func configureBarButton() {
+        closeBarButton.style = .done
+        closeBarButton.title = "Close"
+        closeBarButton.target = self
+        closeBarButton.action = #selector(dismissAction)
+    }
     
-//    @objc func dismissAction() {
-//        self.dismiss(animated: true, completion: nil)
-//    }
+    @objc private func dismissAction() {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }
 
 extension ShowDisplayViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let detaledViewController = TextViewController()
+        detaledViewController.title = "Detailed info"
         detaledViewController.text = array[indexPath.row].about
         navigationController?.pushViewController(detaledViewController, animated: true)
     }
@@ -67,6 +74,9 @@ extension ShowDisplayViewController: UITableViewDataSource {
         cell.detailTextLabel?.text = array[indexPath.row].detailLable
         cell.accessoryType = .detailButton
         cell.selectionStyle = .none
+        
+        cell.backgroundColor = .clear
+        
         return (cell)
     }
 }

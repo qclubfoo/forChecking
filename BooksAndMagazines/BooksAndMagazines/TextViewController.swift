@@ -10,31 +10,18 @@ import UIKit
 
 class TextViewController: UIViewController {
 
-//    var label = UILabel()
     var textField = UITextView()
     var text: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-//        view.addSubview(label)
         view.addSubview(textField)
         setupTextField()
-//        setupLabel()
-        // Do any additional setup after loading the view.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     func setupTextField() {
+        
         let textForShow = text ?? "Nothing to show"
         textField.isEditable = false
         textField.isSelectable = false
@@ -42,25 +29,21 @@ class TextViewController: UIViewController {
         textField.font = textField.font?.withSize(20)
         textField.textColor = .black
         textField.textAlignment = .natural
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1).isActive = true
-        NSLayoutConstraint(item: textField, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottomMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: textField, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailingMargin, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: textField, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leadingMargin, multiplier: 1, constant: 0).isActive = true
-
-        
+        textField.scrollsToTop = true
+        textField.contentInsetAdjustmentBehavior = .never
     }
-//    func setupLabel() {
-//        let textForShow = text ?? "Nothing to show"
-//        label.font = label.font.withSize(20)
-//        label.lineBreakMode = .byWordWrapping
-//        label.text = textForShow
-//        label.textColor = .black
-//        label.textAlignment = .natural
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint(item: label, attribute: .top, relatedBy: .equal, toItem: view, attribute: .topMargin, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: label, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottomMargin, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: label, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailingMargin, multiplier: 1, constant: 0).isActive = true
-//        NSLayoutConstraint(item: label, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leadingMargin, multiplier: 1, constant: 0).isActive = true
-//    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        glueSubviewToViewEdges(setSubview: textField)
+    }
+    
+    func glueSubviewToViewEdges(setSubview subview: UIView)
+    {
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        subview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        subview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        subview.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        subview.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+    }
 }
